@@ -19,6 +19,9 @@ def verify_implementation(model, x):
     y_vpu = model.rope_vpu_standard(x).block_until_ready()
     y_mxu = model.rope_mxu_dense(x).block_until_ready()
 
+    # print("VPU version: ", y_vpu)
+    # print("MXU version: ", y_mxu)
+
     # 计算最大绝对误差
     # 由于浮点数计算顺序不同（VPU是逐点，MXU是累加），可能会有微小精度差异
     diff = jnp.max(jnp.abs(y_vpu - y_mxu))
